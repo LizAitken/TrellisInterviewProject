@@ -7,7 +7,7 @@ import axios from 'axios';
 import { getSensorInfo, Sensor, serverURL } from "../../services/SensorService";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faHome, faBorderNone } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faHome } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 library.add(faTrash, faHome);
@@ -61,9 +61,11 @@ class SensorInfo extends React.Component <SensorProps, any> {
         });
     };
 
-    deleteNote = () => {  
+    deleteNote = (itemId:any ) => {  
         // add delete logic
-        console.log('Deleted Note');
+        console.log('Deleted Note', itemId);
+        const url= `http://localhost:9000/sensors/${this.props.match.params.sensor_id}/delete_note/${itemId}`;
+        
     }
 
 
@@ -86,7 +88,7 @@ class SensorInfo extends React.Component <SensorProps, any> {
                                         <TrashSpan>
                                             <FontAwesomeIcon 
                                                     className="trash" 
-                                                    onClick={() => {this.deleteNote()}} 
+                                                    onClick={() => {this.deleteNote(i)}} 
                                                     icon="trash" 
                                             />
                                         </TrashSpan>

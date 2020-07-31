@@ -99,10 +99,10 @@ app.post("/sensors/:sensor_id?/add_note", (req, res) => {
 
 })
 
-app.post("/sensors/:sensor_id?/delete_note"), (req, res) => {
+app.post("/sensors/:sensor_id?/delete_note/:note_id?"), (req, res) => {
   const sensor_id = req.params.sensor_id;
-  // logic for deleting post
-  // indexOf from list, then splice?  or filter?
+  const note_id = req.params.note_id;
+  
 } 
 
 
