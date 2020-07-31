@@ -1,32 +1,16 @@
 import React from "react";
-import styled from "styled-components";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import SensorList from "./pages/SensorList/SensorList";
+import SensorInfo from "./pages/SensorList/SensorInfo";
 
 const App: React.FC = () => {
   return (
-    <Container>
-      <Header>
-        <Title>Sensor Viewer</Title>
-      </Header>
-      <SensorList />
-    </Container>
+    <Router>
+      <Route path="/" exact component={SensorList} />
+      <Route exact path="/sensors/:sensor_id" component={SensorInfo}/>
+    </Router>
   );
 };
-
-const Container = styled.div`
-  text-align: center;
-`;
-
-const Header = styled.header`
-  background-color: #226f54;
-  height: 70px;
-  padding: 20px;
-  color: white;
-`;
-
-const Title = styled.h1`
-  font-size: 2em;
-`;
 
 export default App;

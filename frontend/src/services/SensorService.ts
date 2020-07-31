@@ -1,4 +1,4 @@
-const serverURL = "http://localhost:9000";
+export const serverURL = "http://localhost:9000";
 
 export interface Sensor {
   id: string;
@@ -13,3 +13,12 @@ export const getSensors = async () => {
   }
   return res.json() as Promise<Sensor[]>;
 };
+
+export const getSensorInfo = async (sensor_id:any) => {
+  const res = await fetch(`${serverURL}/sensors/${sensor_id}`);
+  if (res.status !== 200) {
+    throw new Error(`Error fetching sensor with id:, ${sensor_id}`);
+  }
+
+  return res.json() as Promise<Sensor[]>;
+}

@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 import { getSensors, Sensor } from "../../services/SensorService";
+import SensorCard from "./SensorCard";
+
 
 type RequestState =
   | { state: "LOADING" }
   | { state: "ERROR"; error: string }
   | { state: "LOADED"; sensors: Sensor[] };
 
-const SensorList: React.FC = () => {
+const SensorList: React.FC= () => {
   const [request, setRequest] = useState<RequestState>({ state: "LOADING" });
 
   useEffect(() => {
@@ -29,35 +33,36 @@ const SensorList: React.FC = () => {
   }
 
   return (
-    <ListContainer>
-      {request.sensors.map(({ id, name, description }) => (
-        <SensorCard key={id}>
-          <Name>{name}</Name>
-          <div>{description}</div>
-        </SensorCard>
-      ))}
-    </ListContainer>
+    <Container>
+        <Header>
+          <Title>Sensor Viewer</Title>
+        </Header>
+        <ListContainer>
+          {request.sensors.map(({ id, name, description }) => (
+              <SensorCard sensor_id={id} sensor_name={name} sensor_description={description} key={id}/>
+          ))}
+        </ListContainer>
+    </Container>   
   );
 };
 
+const Container = styled.div`
+  text-align: center;
+`;
+
+const Header = styled.header`
+  background-color: #226f54;
+  height: 70px;
+  padding: 20px;
+  color: white;
+`;
+
+const Title = styled.h1`
+  font-size: 2em;
+`;
+
 const ListContainer = styled.div`
   width: 100%;
-`;
-
-const SensorCard = styled.div`
-  background: white;
-  margin: auto;
-  margin-top: 24px;
-  max-width: 400px;
-  text-align: left;
-  padding: 10px;
-  border-radius: 0px 8px 8px 0px;
-  box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
-  border-left: 6px solid #87c38f;
-`;
-
-const Name = styled.div`
-  font-size: 2rem;
 `;
 
 const ErrorText = styled.div`
