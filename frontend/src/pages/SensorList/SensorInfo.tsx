@@ -65,7 +65,7 @@ class SensorInfo extends React.Component <SensorProps, any> {
         // add delete logic
         console.log('Deleted Note', itemId);
         const url= `http://localhost:9000/sensors/${this.props.match.params.sensor_id}/delete_note/${itemId}`;
-        
+      
     }
 
 
@@ -76,7 +76,10 @@ class SensorInfo extends React.Component <SensorProps, any> {
     return (
         <ListContainer>
         <SensorCard>
-            <h2>{sensor_information.name} Information</h2>
+            <TitleWrap>
+                <h2>{sensor_information.name} Information </h2>
+                <Link to='/'><FontAwesomeIcon icon={faHome} style={homeButton}/></Link>
+            </TitleWrap>
             <div>
                 <p>{sensor_information.description}</p>
                 <h3>Notes :</h3>
@@ -104,15 +107,21 @@ class SensorInfo extends React.Component <SensorProps, any> {
                                 placeholder='Enter Note...' 
                                 name='note' 
                                 onChange={(e) => this.handleInput(e)} />
-                    <NoteButton type='submit'>Add Note</NoteButton>
+                    <Wrap>
+                        <NoteButton type='submit'>Add Note</NoteButton>
+                    </Wrap>
                 </NoteForm>
             </div>
-            <Link to='/'><FontAwesomeIcon icon={faHome} style={homeButton}/></Link>
         </SensorCard>
         </ListContainer>
     );
     }
 };
+
+const TitleWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const ListContainer = styled.div`
     width: 100%;
@@ -164,6 +173,11 @@ const homeButton = {
     fontSize: '23px',
     marginTop: '2.5%'
 }
+
+const Wrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 
 

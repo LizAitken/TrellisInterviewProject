@@ -15,7 +15,9 @@ const SensorCard: React.FC<CardProps>= ({sensor_id, sensor_name, sensor_descript
             <SensorCardStyle>
               <Name>{sensor_name}</Name>
               <div>{sensor_description}</div>
-              <InfoButton><StyledLink to={`/sensors/${sensor_id}`}>More info</StyledLink></InfoButton>
+              <Wrap>
+                <InfoButton><StyledLink to={`/sensors/${sensor_id}`}>More info</StyledLink></InfoButton>
+              </Wrap>
             </SensorCardStyle>
         </>
   );
@@ -37,13 +39,18 @@ const Name = styled.div`
   font-size: 2rem;
 `;
 
+const Wrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const InfoButton = styled.div`
   padding: 10px;
   border: 2px solid #21652A;
   width: 20%;
   border-radius: 8px;
   text-align: center;
-  margin: 15px 0;
+  margin: 15px;
   font-weight: bold;
   color: #21652A;
 `;
