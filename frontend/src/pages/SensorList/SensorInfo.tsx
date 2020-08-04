@@ -5,10 +5,12 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
 import { getSensorInfo, Sensor, serverURL } from "../../services/SensorService";
+import ErrorPopup from "./ErrorPopup";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrash, faHome } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 library.add(faTrash, faHome);
 
@@ -18,14 +20,14 @@ type SensorParams = {
 
 type SensorProps = RouteComponentProps<SensorParams>;
 
-
 class SensorInfo extends React.Component <SensorProps, any> {
 
     constructor(props: any) {
         super(props);
         this.state = {
             sensor_information: {},
-            notes: []
+            notes: [],
+            popUpState: false
         }
     }
     
@@ -39,20 +41,31 @@ class SensorInfo extends React.Component <SensorProps, any> {
             })
     };
 
+    togglePopUp = (e:any) => {
+        (e).preventDefault();
+        this.setState({
+            popUpState: !this.state.popUpState
+        })
+        console.log('Pop up state --->',this.state.popUpState);
+    }
+
     addNote = (e:any) => {
         const url= `http://localhost:9000/sensors/${this.props.match.params.sensor_id}/add_note`
-        // need logic in here to not be able to input empty strings
         // add in Date.now() to get date of entry. Replace ol value with structured date.now() value. Sort based on timestamp.
+        if (e.target.note.value == '') {
+            this.togglePopUp(e);
+        } else {
 
-        axios.post(url, {
-            note: e.target.note.value
-        })
-        .then((response) => {
-            this.setState({
-                notes: response.data.notes
+            axios.post(url, {
+                note: e.target.note.value
             })
-        }) 
-        this.componentDidMount();         
+            .then((response) => {
+                this.setState({
+                    notes: response.data.notes
+                })
+            }) 
+            this.componentDidMount();    
+        }     
     }
 
     handleInput = (e:any) => {
@@ -61,20 +74,40 @@ class SensorInfo extends React.Component <SensorProps, any> {
         });
     };
 
-    deleteNote = (itemId:any ) => {  
+    deleteNote = ( itemId:any ) => {  
         // add delete logic
         console.log('Deleted Note', itemId);
-        const url= `http://localhost:9000/sensors/${this.props.match.params.sensor_id}/delete_note/${itemId}`;
+        const sensorId = this.props.match.params.sensor_id;
+        const url= `http://localhost:9000/sensors/${sensorId}/delete_note/${itemId}`;
+        let specific_note = this.state.sensor_information.noteList[itemId];
+
+        console.log('specific_note-->', specific_note);
+        axios.delete(url, {
+            data: {
+                note: specific_note
+            }
+        })
+        .then((response) => {
+            this.setState({
+                notes: response.data.notes
+            })
+        }) 
+        this.componentDidMount(); 
       
     }
 
 
     render() {
-        const { sensor_information } = this.state;
+        const { sensor_information, popUpState } = this.state;
         console.log('Sesor info-->', sensor_information);
 
     return (
         <ListContainer>
+            {!!popUpState ? 
+            <ErrorPopup togglePopup={(e:any) => this.togglePopUp(e)} />
+            :
+            null
+            }
         <SensorCard>
             <TitleWrap>
                 <h2>{sensor_information.name} Information </h2>

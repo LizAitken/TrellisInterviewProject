@@ -101,7 +101,8 @@ app.post("/sensors/:sensor_id?/add_note", (req, res) => {
 
 app.post("/sensors/:sensor_id?/delete_note/:note_id?"), (req, res) => {
   const sensor_id = req.params.sensor_id;
-  const note_id = req.params.note_id;
+
+  console.log("Got to backend portion.")
   
 } 
 
